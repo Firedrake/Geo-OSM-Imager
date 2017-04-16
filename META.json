@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "simplifies plotting onto OpenStreetMap tiles",
    "author" : [
-      "Roger Bell_West <roger@firedrake.org>"
+      "Roger Bell_West."
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.0.10, CPAN::Meta::Converter version 2.150005",
@@ -42,6 +42,10 @@
       },
       "runtime" : {
          "requires" : {
+            "Geo::Ellipsoid" : "1.14",
+            "HTTP::Request::Common" : "6.06",
+            "Imager" : "1.000",
+            "List::MoreUtils" : "0.33",
             "perl" : "5.008001"
          }
       },
@@ -53,5 +57,8 @@
    },
    "release_status" : "unstable",
    "version" : "0.01",
+   "x_contributors" : [
+      "Roger Bell_West <roger@firedrake.org>"
+   ],
    "x_serialization_backend" : "JSON::PP version 2.27300_01"
 }
