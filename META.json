@@ -56,6 +56,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/Firedrake/Geo-OSM-Imager/issues"
+      },
+      "homepage" : "https://github.com/Firedrake/Geo-OSM-Imager",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/Firedrake/Geo-OSM-Imager.git",
+         "web" : "https://github.com/Firedrake/Geo-OSM-Imager"
+      }
+   },
    "version" : "0.01",
    "x_contributors" : [
       "Roger Bell_West <roger@firedrake.org>"
