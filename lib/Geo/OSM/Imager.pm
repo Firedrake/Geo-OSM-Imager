@@ -10,8 +10,7 @@ use Math::Trig;
 use Geo::Ellipsoid;
 use LWP::UserAgent;
 use HTTP::Request::Common;
-use Date::Parse;
-use List::Util qw(min max sum);
+use List::Util qw(max);
 use List::MoreUtils qw(minmax);
 use Imager;
 
@@ -27,7 +26,7 @@ Geo::OSM::Imager - simplifies plotting onto OpenStreetMap tiles
     my $image=$g->init(\@points);
     ...
     my ($x,$y)=$g->latlon2xy($lat,$lon);
-    $image->circle(x=>$x,y=$y,r=50,color=$blue);
+    $image->circle(x=>$x,y=$y,r=>50,color=>$blue);
     ...
     $image->circle($g->latlon2hash($lat,$lon),r=>50,color=>$blue);
     ...
