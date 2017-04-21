@@ -271,7 +271,8 @@ sub image {
 =item zoom()
 
 Returns the zoom level of the initialised object. See
-http://wiki.openstreetmap.org/wiki/Zoom_levels for more.
+L<Zoom levels|http://wiki.openstreetmap.org/wiki/Zoom_levels> for
+more.
 
 =cut
 

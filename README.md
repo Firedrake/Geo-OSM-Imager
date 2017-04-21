@@ -93,7 +93,8 @@ and plot individual line segments.
 - zoom()
 
     Returns the zoom level of the initialised object. See
-    http://wiki.openstreetmap.org/wiki/Zoom\_levels for more.
+    [Zoom levels](http://wiki.openstreetmap.org/wiki/Zoom_levels) for
+    more.
 
 - latlon2xy()
 
