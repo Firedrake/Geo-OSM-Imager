@@ -161,7 +161,7 @@ sub init {
     }
   }
   my @minmax=map {[minmax(@{$_})]} @series;
-  my $geo=Geo::Ellipsoid->new(units => 'degrees');
+  $self->{geo}=Geo::Ellipsoid->new(units => 'degrees');
 
   my %bounds=(lon => [undef,undef],
               lat => [undef,undef]);
@@ -171,13 +171,13 @@ sub init {
   $bounds{lon}[1]=$minmax[1][1]+($minmax[1][1]-$minmax[1][0])*$self->{marginlon};
 
   my $longdist=max(
-    $geo->to($bounds{lat}[0],$bounds{lon}[0],$bounds{lat}[0],$bounds{lon}[1]),
-    $geo->to($bounds{lat}[1],$bounds{lon}[0],$bounds{lat}[1],$bounds{lon}[1]),
+    $self->{geo}->to($bounds{lat}[0],$bounds{lon}[0],$bounds{lat}[0],$bounds{lon}[1]),
+    $self->{geo}->to($bounds{lat}[1],$bounds{lon}[0],$bounds{lat}[1],$bounds{lon}[1]),
       );                                 # metres
   my $longscale=$longdist/$self->{maxy}; # metres/pixel
   my $latdist=max(
-    $geo->to($bounds{lat}[0],$bounds{lon}[0],$bounds{lat}[1],$bounds{lon}[0]),
-    $geo->to($bounds{lat}[0],$bounds{lon}[1],$bounds{lat}[1],$bounds{lon}[1]),
+    $self->{geo}->to($bounds{lat}[0],$bounds{lon}[0],$bounds{lat}[1],$bounds{lon}[0]),
+    $self->{geo}->to($bounds{lat}[0],$bounds{lon}[1],$bounds{lat}[1],$bounds{lon}[1]),
       );
   my $latscale=$latdist/$self->{maxx};
   my $scale=max($longscale,$latscale); # make sure it fits, use wider scale
@@ -271,8 +271,9 @@ sub image {
 =item zoom()
 
 Returns the zoom level of the initialised object. See
-L<Zoom levels|http://wiki.openstreetmap.org/wiki/Zoom_levels> for
-more.
+L<Zoom levels|http://wiki.openstreetmap.org/wiki/Zoom_levels> and
+L<Slippy Map Tilenames|http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames>
+for more.
 
 =cut
 
@@ -292,7 +293,7 @@ sub getTileNumber {
   return ($xtile, $ytile);
 }
 
-=item latlon2xy()
+=item latlon2xy($lat,$lon)
 
 Given a (latitude, longitude) coordinate pair, returns the (x, y)
 coordinate pair needed to plot onto the Imager object.
@@ -310,7 +311,7 @@ sub latlon2xy {
   return ($x,$y);
 }
 
-=item latlon2hash()
+=item latlon2hash($lat,$lon)
 
 Given a (latitude, longitude) coordinate pair, returns a list of the
 form ('x', $x, 'y', $y) for use with many Imager plotting functions.
@@ -321,6 +322,48 @@ sub latlon2hash {
   my ($self,$lat,$lon) = @_;
   my ($x,$y)=$self->latlon2xy($lat,$lon);
   return ('x',$x,'y',$y);
+}
+
+=item segment($lat1,$lon1,$lat2,$lon2,$step)
+
+Given two (latitude, longitude) coordinate pairs and a step value,
+returns an arrayref of (latitude, longitude) coordinate pairs
+interpolating the route on a great circle. This is generally worth
+doing when distances exceed around 100 miles or high precision is
+wanted.
+
+A positive step value is the length of each segment in metres. A
+negative step value is the number of divisions into which the overall
+line should be split.
+
+=cut
+
+sub segment {
+  my ($self,$lat1,$lon1,$lat2,$lon2,$step)=@_;
+  my @out=[$lat1,$lon1];
+  my ($r,$b)=$self->{geo}->to($lat1,$lon1,$lat2,$lon2);
+  if ($step<0) {
+    $step=-$r/$step;
+  }
+  my $ra=0;
+  while ($ra<$r) {
+    $ra+=$step;
+    push @out,[$self->{geo}->at($lat1,$lon1,$ra,$b)];
+    $out[-1][1]=$self->constrain($out[-1][1],180);
+  }
+  push @out,[$lat2,$lon2];
+  return @out;
+}
+
+sub constrain {
+  my ($self,$angle,$range)=@_;
+  while ($angle>$range) {
+    $angle-=$range*2;
+  }
+  while ($angle<-$range) {
+    $angle+=$range*2;
+  }
+  return $angle;
 }
 
 =back
