@@ -93,18 +93,31 @@ and plot individual line segments.
 - zoom()
 
     Returns the zoom level of the initialised object. See
-    [Zoom levels](http://wiki.openstreetmap.org/wiki/Zoom_levels) for
-    more.
+    [Zoom levels](http://wiki.openstreetmap.org/wiki/Zoom_levels) and
+    [Slippy Map Tilenames](http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames)
+    for more.
 
-- latlon2xy()
+- latlon2xy($lat,$lon)
 
     Given a (latitude, longitude) coordinate pair, returns the (x, y)
     coordinate pair needed to plot onto the Imager object.
 
-- latlon2hash()
+- latlon2hash($lat,$lon)
 
     Given a (latitude, longitude) coordinate pair, returns a list of the
     form ('x', $x, 'y', $y) for use with many Imager plotting functions.
+
+- segment($lat1,$lon1,$lat2,$lon2,$step)
+
+    Given two (latitude, longitude) coordinate pairs and a step value,
+    returns an arrayref of (latitude, longitude) coordinate pairs
+    interpolating the route on a great circle. This is generally worth
+    doing when distances exceed around 100 miles or high precision is
+    wanted.
+
+    A positive step value is the length of each segment in metres. A
+    negative step value is the number of divisions into which the overall
+    line should be split.
 
 # OTHER CONSIDERATIONS
 
