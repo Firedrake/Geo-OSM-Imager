@@ -45,6 +45,7 @@
             "Geo::Ellipsoid" : "1.14",
             "HTTP::Request::Common" : "6.06",
             "Imager" : "1.000",
+            "LWP::UserAgent" : "6.15",
             "List::MoreUtils" : "0.33",
             "perl" : "5.008001"
          }
@@ -67,7 +68,7 @@
          "web" : "https://github.com/Firedrake/Geo-OSM-Imager"
       }
    },
-   "version" : "0.02",
+   "version" : "0.03",
    "x_contributors" : [
       "Roger Bell_West <roger@firedrake.org>"
    ],
